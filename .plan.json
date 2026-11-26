@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "language": "de",
+  "understanding": {
+    "summary": "Der Sportverein legt Veranstaltungen mit Titel, Datum und Ort an. Zu jeder Veranstaltung gibt es einen eigenen QR-Code, der mit einem Klick bildschirmfüllend in einem eigenen Tab öffnet. Gäste scannen ihn und melden sich ohne Anmeldung für genau diese Veranstaltung an, mit Name und Anzahl der Personen. Zusätzlich gibt es eine allgemeine Seite „Mitglied werden“ für alle, auf der Interessierte Name, E-Mail-Adresse und gewünschte Sportart eintragen. Auch ihr QR-Code öffnet mit einem Klick bildschirmfüllend, etwa für den Empfang. Die Übersicht zeigt die Anmeldungen je Veranstaltung und die neuen Mitgliedsanfragen.",
+    "outside_users": [
+      {
+        "who": "Gäste",
+        "does": "melden sich per QR-Code für eine Veranstaltung an mit Name und Anzahl der Personen"
+      },
+      {
+        "who": "Interessierte",
+        "does": "tragen auf der Seite Mitglied werden Name, E-Mail-Adresse und gewünschte Sportart ein"
+      }
+    ],
+    "roles": [
+      "Vereinsverwaltung"
+    ],
+    "main_tasks": [
+      "Veranstaltungen anlegen",
+      "QR-Code einer Veranstaltung oder der Seite Mitglied werden zeigen",
+      "Anmeldungen je Veranstaltung ansehen",
+      "Neue Mitgliedsanfragen ansehen"
+    ],
+    "platform_roles": [
+      {
+        "persona": "Vereinsverwaltung",
+        "role": "datenverarbeitung",
+        "apps": [
+          "veranstaltungen",
+          "anmeldungen",
+          "mitglied_werden"
+        ]
+      }
+    ],
+    "wish_kind": "plain",
+    "wish_signals": []
+  },
+  "flows": [],
+  "public_pages": [
+    {
+      "slug": "veranstaltung-anmelden",
+      "purpose": "Gäste öffnen den Link oder QR-Code einer Veranstaltung und melden sich ohne Anmeldung für genau diese Veranstaltung an: Vorname, Nachname und Anzahl der Personen.",
+      "publish": true,
+      "lists": [
+        {
+          "entity": "veranstaltungen",
+          "columns": [
+            "titel",
+            "datum",
+            "ort"
+          ],
+          "filter": null,
+          "max_records": null
+        }
+      ],
+      "creates": [
+        {
+          "entity": "anmeldungen",
+          "fields": {
+            "veranstaltung": "picked",
+            "gast_vorname": "user",
+            "gast_nachname": "user",
+            "anzahl_personen": "user"
+          },
+          "fixed": {}
+        }
+      ],
+      "visitor_fields": [],
+      "page_sets": [],
+      "record_key": {},
+      "editable": {},
+      "edit_own": false,
+      "link_param": {
+        "name": "veranstaltung",
+        "entity": "veranstaltungen",
+        "label_field": "titel"
+      },
+      "door_per_record": {
+        "entity": "veranstaltungen",
+        "param": "tor",
+        "link_param": "veranstaltung",
+        "refs": {
+          "anmeldungen": "veranstaltung"
+        }
+      },
+      "vote": null,
+      "brief": "# Public page `veranstaltung-anmelden`\nGäste öffnen den Link oder QR-Code einer Veranstaltung und melden sich ohne Anmeldung für genau diese Veranstaltung an: Vorname, Nachname und Anzahl der Personen.\n\n## Lists (declare exactly these in the surface)\n- `veranstaltungen`: columns `titel`, `datum`, `ort`\n\n## Creates (declare exactly these in the surface)\n- `anmeldungen`: visitor fields `veranstaltung`, `gast_vorname`, `gast_nachname`, `anzahl_personen`\n\n## A pair of doors per linked record (door_per_record, EF-51)\n- Every `veranstaltungen` record has its OWN read door and write door; the link the owner hands out is `#/public/veranstaltung-anmelden?veranstaltung=<id>&tor=<read>.<write>`, and the client swaps the doors in by itself (`loadPublicPagesConfig('veranstaltung-anmelden')` reads the address). Declare `\"door_per_record\": true` next to `link_param` in the surface. Nothing else changes in how you read and write.\n- The read door answers ONLY this record's children (`anmeldungen`) and the linked `veranstaltungen` record itself — a client-side narrowing by the reference is harmless but not needed.\n- The write door PRESETS the reference to the `veranstaltungen` on every create: never put that field into a form, `values` or `link` (the platform answers 400 for a client that sends it); the layer drops it from the payload.\n- A link whose doors are gone (closed and renewed, deleted) answers 404: say „Dieser Link ist nicht mehr gültig. Bitte den aktuellen Link oder QR-Code verwenden.“ — never the empty state. When the `veranstaltungen` is closed, the write door is off: the page shows the result view (your status check) and sends nothing.\n- The doors' ids live in the link alone (`tor=`): never a field, never text on the page.\n\n## Link parameter (declare exactly this in the surface)\n- `link_param: { name: 'veranstaltung', entity: 'veranstaltungen', label_field: 'titel' }` — the page opens as `#/public/veranstaltung-anmelden?veranstaltung=<id>` and reads THAT `veranstaltungen` record from its list endpoint; without the parameter it shows a short notice (never a list to pick from — the owner hands out one link per record).\n\n## Availability — mechanical, write nothing for it\nA picker (`useRecordSearch`) never offers a record another record already takes (a booked slot) — the layer leaves it out. To SHOW booked periods, call `useOccupancy(port, '<entity>')` and hand `blocked` to AvailabilityRangePicker; the integration gives the page exactly that read (dates or the reference, never who booked). Never declare a list of bookings with names or contacts to work availability out yourself.\n\nPublish: never from here — every page starts as a draft; the owner publishes it under Verwaltung → Öffentliche Seiten after the build (the plan wishes it published)\n"
+    },
+    {
+      "slug": "mitglied-werden",
+      "purpose": "Interessierte tragen ohne Anmeldung Vorname, Nachname, E-Mail-Adresse und gewünschte Sportart ein. Die Seite ist für alle gleich.",
+      "publish": true,
+      "lists": [],
+      "creates": [
+        {
+          "entity": "mitglied_werden",
+          "fields": {
+            "interessent_vorname": "user",
+            "interessent_nachname": "user",
+            "email": "user",
+            "sportart": "user"
+          },
+          "fixed": {}
+        }
+      ],
+      "visitor_fields": [],
+      "page_sets": [],
+      "record_key": {},
+      "editable": {},
+      "edit_own": false,
+      "link_param": null,
+      "door_per_record": null,
+      "vote": null,
+      "brief": "# Public page `mitglied-werden`\nInteressierte tragen ohne Anmeldung Vorname, Nachname, E-Mail-Adresse und gewünschte Sportart ein. Die Seite ist für alle gleich.\n\n## Creates (declare exactly these in the surface)\n- `mitglied_werden`: visitor fields `interessent_vorname`, `interessent_nachname`, `email`, `sportart`\n\n## Availability — mechanical, write nothing for it\nA picker (`useRecordSearch`) never offers a record another record already takes (a booked slot) — the layer leaves it out. To SHOW booked periods, call `useOccupancy(port, '<entity>')` and hand `blocked` to AvailabilityRangePicker; the integration gives the page exactly that read (dates or the reference, never who booked). Never declare a list of bookings with names or contacts to work availability out yourself.\n\nPublish: never from here — every page starts as a draft; the owner publishes it under Verwaltung → Öffentliche Seiten after the build (the plan wishes it published)\n"
+    }
+  ],
+  "tools": [],
+  "covered_by_platform": [
+    {
+      "wish": "Veranstaltungen mit Titel, Datum und Ort anlegen",
+      "feature": "record_form"
+    }
+  ],
+  "ownership": {},
+  "dashboard": {
+    "focus": [
+      "Anmeldungen je Veranstaltung, mit Summe der angemeldeten Personen",
+      "Neue Mitgliedsanfragen mit gewünschter Sportart",
+      "Pro Veranstaltung ein Klick auf den QR-Code, der bildschirmfüllend in einem eigenen Tab öffnet",
+      "Ein Klick auf den QR-Code der Seite Mitglied werden, bildschirmfüllend in einem eigenen Tab"
+    ],
+    "hints": [
+      "Kommende Veranstaltungen zuerst anzeigen",
+      "Mitgliedsanfragen nach Sportart gruppierbar über die Verteilungsansicht"
+    ],
+    "views": [
+      {
+        "route": "qr-veranstaltung",
+        "label": {
+          "de": "QR-Code Veranstaltung",
+          "en": "Event QR code"
+        },
+        "purpose": "Den QR-Code zur Anmeldung für genau eine Veranstaltung bildschirmfüllend zeigen, etwa am Eingang oder auf dem Bildschirm im Saal",
+        "bare": true,
+        "live_seconds": 0,
+        "reads": [
+          {
+            "entity": "veranstaltungen",
+            "columns": [
+              "titel",
+              "datum",
+              "ort"
+            ],
+            "filter": {
+              "mode": "all",
+              "conditions": []
+            }
+          }
+        ],
+        "contract": [
+          "Die Übersicht hat bei jeder Veranstaltung einen Knopf, der diese Ansicht in einem eigenen Browsertab öffnet und die gewählte Veranstaltung mitgibt.",
+          "Zeigt den QR-Code der Anmeldeseite genau dieser Veranstaltung so groß, wie der Bildschirm es zulässt, darüber Titel, Datum und Ort.",
+          "Ohne mitgegebene oder mit einer unbekannten Veranstaltung erscheint der Hinweis „Veranstaltung wählen“ ohne QR-Code."
+        ],
+        "shows_marked": "",
+        "edits": [],
+        "compose": []
+      },
+      {
+        "route": "qr-mitglied-werden",
+        "label": {
+          "de": "QR-Code Mitglied werden",
+          "en": "Become a member QR code"
+        },
+        "purpose": "Den QR-Code der allgemeinen Seite Mitglied werden bildschirmfüllend zeigen, etwa am Empfang",
+        "bare": true,
+        "live_seconds": 0,
+        "reads": [],
+        "contract": [
+          "Die Übersicht hat einen Knopf, der diese Ansicht in einem eigenen Browsertab öffnet.",
+          "Zeigt den QR-Code der Seite Mitglied werden so groß, wie der Bildschirm es zulässt, mit der Überschrift „Mitglied werden“.",
+          "Der QR-Code ist für alle Besucher gleich und bleibt unverändert."
+        ],
+        "shows_marked": "",
+        "edits": [],
+        "compose": []
+      }
+    ],
+    "writes": [],
+    "wishes": []
+  }
+}

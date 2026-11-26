@@ -1,0 +1,19 @@
+{
+  "VeranstaltungenDialog.tsx": {
+    "titel": "z. B. Sommerfest 2026",
+    "datum": "Wann findet es statt?",
+    "ort": "z. B. Vereinsheim"
+  },
+  "AnmeldungenDialog.tsx": {
+    "veranstaltung": "Welche Veranstaltung?",
+    "gast_vorname": "z. B. Anna",
+    "gast_nachname": "z. B. Müller",
+    "anzahl_personen": "z. B. 2"
+  },
+  "MitgliedWerdenDialog.tsx": {
+    "interessent_vorname": "z. B. Anna",
+    "interessent_nachname": "z. B. Müller",
+    "email": "z. B. anna@beispiel.de",
+    "sportart": "z. B. Fußball, Tennis"
+  }
+}

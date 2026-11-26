@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "Veranstaltungen": {
+      "placeholders_set": 3,
+      "defaults_keys": [
+        "datum"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formeln, da nur Stammdaten ohne numerische Felder oder Datumspaar vorhanden sind."
+    },
+    "Anmeldungen": {
+      "placeholders_set": 4,
+      "defaults_keys": [
+        "anzahl_personen"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formel, da keine Preis- oder Datumsfelder vorhanden sind; Personenanzahl startet mit 1."
+    },
+    "Mitglied werden": {
+      "placeholders_set": 4,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Reines Anmeldeformular ohne Zahlen- oder Datumsfelder, daher keine Formeln und keine sinnvollen Standardwerte."
+    }
+  }
+}

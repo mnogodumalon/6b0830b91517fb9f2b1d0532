@@ -1,0 +1,24 @@
+{
+  "pages": {
+    "en": {
+      "Als Nächstes: {0} am {1} — {2}": "Next up: {0} on {1} — {2}",
+      "Anfragen nach Sportart": "Inquiries by sport",
+      "Angemeldete Personen (kommend)": "Registered people (upcoming)",
+      "Erste Veranstaltung anlegen": "Create first event",
+      "Kommende Veranstaltungen": "Upcoming events",
+      "Lege deine erste Veranstaltung an und teile den QR-Code.": "Create your first event and share the QR code.",
+      "Neue Anfragen (7 Tage)": "New inquiries (7 days)",
+      "Neue Mitgliedsanfragen": "New membership inquiries",
+      "Neue Veranstaltung": "New event",
+      "Noch keine Anfragen — zeige den QR-Code am Empfang.": "No inquiries yet — show the QR code at the front desk.",
+      "Noch keine Veranstaltung — lege die erste an.": "No events yet — create the first one.",
+      "Ohne Sportart": "No sport",
+      "Personen": "People",
+      "QR „Mitglied werden“": "QR \"Become a member\"",
+      "QR-Code": "QR code",
+      "Sportart": "Sport",
+      "Zuletzt interessiert: {0}": "Last interested in: {0}"
+    }
+  },
+  "v": 1
+}

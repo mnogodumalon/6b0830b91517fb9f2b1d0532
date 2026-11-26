@@ -1,0 +1,7 @@
+Ziel: Unser Sportverein organisiert Veranstaltungen und gewinnt neue Mitglieder.
+
+Ich lege Veranstaltungen mit Titel, Datum und Ort an. Zu jeder Veranstaltung gibt es einen eigenen QR-Code zur Anmeldung. Ein Klick bei der Veranstaltung öffnet ihn bildschirmfüllend in einem eigenen Browsertab. Gäste scannen ihn und melden sich ohne Anmeldung für genau diese Veranstaltung an: Name und Anzahl der Personen.
+
+Zusätzlich gibt es eine allgemeine Seite „Mitglied werden“, die für alle gleich ist: Interessierte tragen dort ohne Anmeldung Name, E-Mail-Adresse und gewünschte Sportart ein. Auch den QR-Code dieser Seite öffne ich mit einem Klick bildschirmfüllend in einem eigenen Browsertab, um ihn am Empfang zu zeigen.
+
+In der Übersicht sehe ich die Anmeldungen je Veranstaltung und die neuen Mitgliedsanfragen.
